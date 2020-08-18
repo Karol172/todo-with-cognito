@@ -1,1 +1,5 @@
-
+cognito:
+  urlRoot: # your custom domain
+  clientId: # your clientID
+  clientSecret: # your clientSecret
+  redirectUri: # your callback URI
