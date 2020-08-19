@@ -11,5 +11,7 @@ public class CognitoProperties {
     private String clientId;
     private String clientSecret;
     private String redirectUri;
+    private String issuer;
+    private String keyStorePath;
 
 }

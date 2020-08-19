@@ -3,3 +3,7 @@ cognito:
   clientId: # your clientID
   clientSecret: # your clientSecret
   redirectUri: # your callback URI
+  region: # your region
+  poolId: # your PoolId
+  issuer: https://cognito-idp.${cognito.region}.amazonaws.com/${cognito.poolId}
+  keyStorePath: ${cognito.issuer}/.well-known/jwks.json
