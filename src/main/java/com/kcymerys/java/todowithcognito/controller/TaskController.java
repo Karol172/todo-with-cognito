@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/task")
+@CrossOrigin("*")
 @AllArgsConstructor
 public class TaskController {
 
@@ -58,6 +58,13 @@ public class TaskController {
                 .map(task -> modelMapper.map(task, TaskDTO.class));
     }
 
+    @GetMapping("/user/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Page<TaskDTO> usersTasks (Pageable pageable, @PathVariable String username) {
+        return taskService.getUsersTasks(pageable, username)
+                .map(task -> modelMapper.map(task, TaskDTO.class));
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -69,13 +76,6 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, Object> handle404 (EntityNotFoundException exc) {
         return Map.of("status", HttpStatus.NOT_FOUND.value(),
-                "message", exc.getMessage());
-    }
-
-    @ExceptionHandler({AccessDeniedException.class})
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public Map<String, Object> handle403 (AccessDeniedException exc) {
-        return Map.of("status", HttpStatus.FORBIDDEN.value(),
                 "message", exc.getMessage());
     }
 

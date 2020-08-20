@@ -1,5 +1,6 @@
 package com.kcymerys.java.todowithcognito.security.filter;
 
+import com.kcymerys.java.todowithcognito.security.model.Role;
 import com.kcymerys.java.todowithcognito.utils.CognitoProperties;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,20 +79,22 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
                 jwtProcessor.setJWSKeySelector(keySelector);
                 JWTClaimsSet claimsSet = jwtProcessor.process(jwt, null);
 
+
                 List<GrantedAuthority> authorities =
-                        ((List<String>) claimsSet.getClaim("cognito:groups"))
+                        Optional.ofNullable((List<String>) claimsSet.getClaim("cognito:groups"))
+                                .orElse(Collections.emptyList())
                                 .stream()
                                 .map(group -> {
                                     switch (group) {
                                         case "admin":
-                                            return new SimpleGrantedAuthority("ROLE_ADMIN");
+                                            return new SimpleGrantedAuthority(Role.ADMIN.value());
                                         case "users":
-                                            return new SimpleGrantedAuthority("ROLE_USER");
+                                            return new SimpleGrantedAuthority(Role.USER.value());
                                         default:
-                                            return new SimpleGrantedAuthority("EMPTY");
+                                            return new SimpleGrantedAuthority("");
                                     }
                                 })
-                                .filter(group -> !group.getAuthority().equals("EMPTY"))
+                                .filter(group -> !group.getAuthority().equals(""))
                                 .collect(Collectors.toList());
 
                 return new UsernamePasswordAuthenticationToken(
