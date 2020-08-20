@@ -1,5 +1,6 @@
 package com.kcymerys.java.todowithcognito.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Table(name = "COGNITO_USER")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -19,7 +21,7 @@ public class User {
     @Column(name = "USERNAME", unique = true, nullable = false, updatable = false, length = 64)
     private String username;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Task> tasks;
 
 }
