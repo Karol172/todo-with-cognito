@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("*")
 @AllArgsConstructor
 @RequestMapping("/auth")
 @Api(value = "Auth", description = "API for logging to AWS Cognito", tags = "Auth")
