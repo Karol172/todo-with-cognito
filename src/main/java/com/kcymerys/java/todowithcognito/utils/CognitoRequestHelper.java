@@ -20,8 +20,8 @@ public class CognitoRequestHelper {
                 "?grant_type=authorization_code" +
                 "&client_id=" + properties.getClientId() +
                 "&code=" + code +
-                "&redirect_uri=" + properties.getRedirectUri() +
-                "&scope=openid";
+                "&scope=openid"+
+                "&redirect_uri=" + properties.getRedirectUri();
     }
 
     public static HttpEntity buildTokenRequest(CognitoProperties properties) {

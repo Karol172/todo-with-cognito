@@ -32,3 +32,5 @@ module "cognito_user_pool_client" {
   client_name = var.cognito_user_pool_client_name
   user_pool_id = module.cognito_user_pool.id
 }
+
+data "aws_region" "current" {}

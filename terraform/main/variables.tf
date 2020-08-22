@@ -1,6 +1,7 @@
 variable "cognito_domain" {
   type = string
   description = "The domain of cognito user pool."
+  default = "default-domain123123"
 }
 
 variable "cognito_user_pool_client_callbacks" {

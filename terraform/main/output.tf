@@ -22,3 +22,7 @@ output "admin_credentials" {
 output "user_credentials" {
   value = module.cognito_users.user_credentials
 }
+
+output "region" {
+  value = data.aws_region.current.name
+}
